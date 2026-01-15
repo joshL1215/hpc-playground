@@ -1,6 +1,10 @@
 #include <iostream>
 #include <vector>
 
+inline int get_idx(int i, int j, int width) {
+    return i * width + j;
+}
+
 int main() {
     int WIDTH = 25;
     int HEIGHT = 25;
@@ -10,7 +14,8 @@ int main() {
 
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
-            input[i * WIDTH + j] = i;
+            int center = get_idx(i, j, WIDTH);
+            input[center] = i;
         }
     }
 
@@ -19,18 +24,19 @@ int main() {
     for (int it = 0; it < ITERATIONS; it++) {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
+                int center = get_idx(i, j, WIDTH);
                 int d_up = 0, d_right = 0, d_down = 0, d_left = 0;
 
                 if (j > 0)
-                    d_left = input[i * WIDTH + j - 1];
+                    d_left = input[center - 1];
                 if (j < WIDTH - 1)
-                    d_right = input[i * WIDTH + j + 1];
+                    d_right = input[center + 1];
                 if (i > 0)
-                    d_up = input[(i - 1) * WIDTH + j];
+                    d_up = input[center - WIDTH];
                 if (i < HEIGHT - 1)
-                    d_down = input[(i + 1) * WIDTH + j];
+                    d_down = input[center + WIDTH];
 
-                output[i * WIDTH + j] = input[i * WIDTH + j] + d_up + d_right + d_down + d_left;
+                output[center] = input[center] + d_up + d_right + d_down + d_left;
             }
         }
         std::swap(input, output);
